@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 345dc0d7042d23c418d92b3c9a69634b
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Good Eatin Pro AOE
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 7b7f9804afeefb542b19e226d1130046, type: 3}
+  - {fileID: 12800000, guid: ef0540b1f151e754487a83eb9b8169e2, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca43e0c49a0d03846b62c792212192c1, type: 3}
+  m_Name: Level3EconomySettings
+  m_EditorClassIdentifier: 
+  opPriceVar: 20
+  upgradeVar: 50
+  standPriceVar: 550
+  opVar1: 20
+  opVar2: 20
+  upVar1: 76
+  upVar2: 2
+  payment: 94110000907e000000a30200008c0a0040420f00a0252600
+  paymentMultiplier: 1
+  opClickCapacity: 0
+  upClickCapacity: 0
+  speedDown: 4
+  speedUp: 8
+  turnTime: 0.4
+  productSpeed: 1
+  productSpeedUp: 0.5
+  productSpeedDown: 1
+  yuzdeOp: 0.015
+  yuzdeMerge: 0.018
+  yuzdeStand: 6
+  newMapPrice:
+  - 3000000
+  - 7500000
+  - 175000000
+  - 1.5e+11
+  _keyMoneyPer: MoneyPer_3
+  _keyCurrentOpPrice: COP_3
+  _keyCurrentUpPrice: CUP_3
+  _keyCurrentStandPrice: CSP_3
