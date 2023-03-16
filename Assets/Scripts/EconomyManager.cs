@@ -6,7 +6,13 @@ using TMPro;
 public class EconomyManager : MonoBehaviour
 {
 
+
+
+    public float ComeBackVar;
+
     [SerializeField] TMP_Text _speedText;
+
+
 
 
     [Header(" Baslangic Degerleri")]
@@ -75,6 +81,7 @@ public class EconomyManager : MonoBehaviour
 
         economySettings = EconomySettings[FindObjectOfType<GameManager>().FactoryValue];
 
+        ComeBackVar = economySettings.ComeBackVar;
         opPriceVar = economySettings.opPriceVar;
         upgradeVar = economySettings.upgradeVar;
         standPriceVar = economySettings.standPriceVar;
@@ -82,6 +89,8 @@ public class EconomyManager : MonoBehaviour
         opVar2 = economySettings.opVar2;
         upVar1 = economySettings.upVar1;
         upVar2 = economySettings.upVar2;
+
+
 
         for (int i = 0; i < payment.Length; i++)
         {

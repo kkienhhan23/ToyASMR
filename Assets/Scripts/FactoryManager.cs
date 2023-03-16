@@ -411,7 +411,7 @@ public class FactoryManager : MonoBehaviour
     {
         if (StandValue < Stand.Length - 1 && money >= _currentStandPrice)
         {
-
+            MissionManager.instance.FirstMission();
             tutorial.gameObject.SetActive(false);
 
             money -= _currentStandPrice;
@@ -472,7 +472,7 @@ public class FactoryManager : MonoBehaviour
         {
 
             tutorial.gameObject.SetActive(false);
-
+            MissionManager.instance.FirstMission();
 
 
 
@@ -565,7 +565,10 @@ public class FactoryManager : MonoBehaviour
 
 
 
-
+            if (MissionManager.instance.currentMission.missionType == "worker")
+            {
+                MissionManager.instance.DoMission();
+            }
 
 
 
@@ -599,7 +602,10 @@ public class FactoryManager : MonoBehaviour
                 }
             }
 
-
+            if (MissionManager.instance.currentMission.missionType == "worker")
+            {
+                MissionManager.instance.DoMission();
+            }
 
             StartCoroutine(AddingOperator());
         }
@@ -662,6 +668,10 @@ public class FactoryManager : MonoBehaviour
             //    z1++;
             //}
 
+            if (MissionManager.instance.currentMission.missionType == "merge")
+            {
+                MissionManager.instance.DoMission();
+            }
 
             HierarchyOp();
             StartCoroutine(AddingMachine(CurrentSlot[2], CurrentSlot[1], CurrentSlot[0]));
@@ -708,6 +718,11 @@ public class FactoryManager : MonoBehaviour
             //    z1++;
             //}
 
+            if (MissionManager.instance.currentMission.missionType == "merge")
+            {
+                MissionManager.instance.DoMission();
+            }
+
             HierarchyOpMac();
             StartCoroutine(AddingLaser(CurrentSlot[2], CurrentSlot[1], CurrentSlot[0]));
 
@@ -753,6 +768,12 @@ public class FactoryManager : MonoBehaviour
             //    nVar1 = 0;
             //    z1++;
             //}
+
+
+            if (MissionManager.instance.currentMission.missionType == "merge")
+            {
+                MissionManager.instance.DoMission();
+            }
 
             HierarchyOpLaser();
             StartCoroutine(AddingHexa(CurrentSlot[2], CurrentSlot[1], CurrentSlot[0]));
@@ -801,6 +822,11 @@ public class FactoryManager : MonoBehaviour
             //    z1++;
             //}
 
+            if (MissionManager.instance.currentMission.missionType == "merge")
+            {
+                MissionManager.instance.DoMission();
+            }
+
             HierarchyOpHexa();
             StartCoroutine(AddingPress(CurrentSlot[2], CurrentSlot[1], CurrentSlot[0]));
 
@@ -848,6 +874,10 @@ public class FactoryManager : MonoBehaviour
             //    z1++;
             //}
 
+            if (MissionManager.instance.currentMission.missionType == "merge")
+            {
+                MissionManager.instance.DoMission();
+            }
 
             HierarchyOpPress();
             StartCoroutine(AddingTermal(CurrentSlot[2], CurrentSlot[1], CurrentSlot[0]));
@@ -883,7 +913,10 @@ public class FactoryManager : MonoBehaviour
             }
 
 
-
+            if (MissionManager.instance.currentMission.missionType == "merge")
+            {
+                MissionManager.instance.DoMission();
+            }
 
             HierarchyOp();
             StartCoroutine(AddingMachine(CurrentSlot[2], CurrentSlot[1], CurrentSlot[0]));
@@ -894,7 +927,10 @@ public class FactoryManager : MonoBehaviour
         if (OpMacCount > 2)
         {
 
-
+            if (MissionManager.instance.currentMission.missionType == "merge")
+            {
+                MissionManager.instance.DoMission();
+            }
 
             HierarchyOpMac();
             StartCoroutine(AddingLaser(CurrentSlot[2], CurrentSlot[1], CurrentSlot[0]));
@@ -906,7 +942,10 @@ public class FactoryManager : MonoBehaviour
         if (OpLaserCount > 2)
         {
 
-
+            if (MissionManager.instance.currentMission.missionType == "merge")
+            {
+                MissionManager.instance.DoMission();
+            }
 
             HierarchyOpLaser();
             StartCoroutine(AddingHexa(CurrentSlot[2], CurrentSlot[1], CurrentSlot[0]));
@@ -919,7 +958,10 @@ public class FactoryManager : MonoBehaviour
         {
 
 
-
+            if (MissionManager.instance.currentMission.missionType == "merge")
+            {
+                MissionManager.instance.DoMission();
+            }
 
             HierarchyOpHexa();
             StartCoroutine(AddingPress(CurrentSlot[2], CurrentSlot[1], CurrentSlot[0]));
@@ -931,7 +973,10 @@ public class FactoryManager : MonoBehaviour
         if (OpPressCount > 2)
         {
 
-
+            if (MissionManager.instance.currentMission.missionType == "merge")
+            {
+                MissionManager.instance.DoMission();
+            }
 
             HierarchyOpPress();
             StartCoroutine(AddingTermal(CurrentSlot[2], CurrentSlot[1], CurrentSlot[0]));
@@ -1708,9 +1753,9 @@ public class FactoryManager : MonoBehaviour
     }
 
 
-    public void MoneyUp()
+    public void MoneyUp(float value)
     {
-        money += 1000000;
+        money += value;
     }
 
     public void MoneyInflate()
@@ -1754,6 +1799,8 @@ public class FactoryManager : MonoBehaviour
         PlayerPrefs.SetInt(_keyBoxCapacity, boxCapacity);
 
         PlayerPrefs.SetFloat("MainMoney", gameManager.money);
+
+        MissionManager.instance.SaveMission();
     }
 
 

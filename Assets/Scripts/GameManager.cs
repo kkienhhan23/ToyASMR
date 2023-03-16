@@ -2,6 +2,7 @@
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using System;
 //using Facebook.Unity;
 //using GameAnalyticsSDK;
 using TMPro;
@@ -9,8 +10,11 @@ using UnityEngine.SceneManagement;
 using Taptic;
 public class GameManager : MonoBehaviour
 {
- 
 
+
+
+    [SerializeField] int _comeBackValue;
+    [SerializeField] float _comeBackReward;
 
     [SerializeField] AudioSource buttonAudioSource;
 
@@ -150,7 +154,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] TutorialManager tutorial;
 
 
-
+    [SerializeField] GameObject _comeBackTab;
+    [SerializeField] TMP_Text _comeBackText;
 
 
 
@@ -180,7 +185,28 @@ public class GameManager : MonoBehaviour
 
         _ADSCanvas.SetActive(true);
 
- 
+
+        string lastTimeString = PlayerPrefs.GetString("lastTime", "");
+        if (!string.IsNullOrEmpty(lastTimeString))
+        {
+            // Son kaydedilen zaman damgasını DateTime nesnesine dönüştür
+            System.DateTime lastTime = System.DateTime.Parse(lastTimeString);
+
+            // Şu anki zaman damgasını al
+            System.DateTime currentTime = System.DateTime.Now;
+
+            // İki zaman damgası arasındaki süreyi hesapla
+            System.TimeSpan timeSinceLastQuit = currentTime - lastTime;
+
+            // Geçen süreyi saat olarak hesapla ve yazdır
+            Debug.Log("Oyun kapalıyken geçen süre: " + timeSinceLastQuit.TotalSeconds.ToString("F2") + " saat");
+
+
+            _comeBackValue =(int)(timeSinceLastQuit.TotalSeconds);
+
+
+        }
+
 
 
 
@@ -205,7 +231,7 @@ public class GameManager : MonoBehaviour
     //        Debug.Log("Failed to Initialize the Facebook SDK");
     //    }
     //}
-
+   
 
     // Start is called before the first frame update
     void Start()
@@ -222,6 +248,23 @@ public class GameManager : MonoBehaviour
        
 
         LoadGame();
+
+        if (_comeBackValue>=10)
+        {
+            if (_comeBackValue >= 18000)
+            {
+                _comeBackReward = 18000 * economySettings[PlayerPrefs.GetInt("LastFactory")].ComeBackVar;
+                
+            }
+            else
+            {
+              _comeBackReward = _comeBackValue * economySettings[PlayerPrefs.GetInt("LastFactory")].ComeBackVar;
+                
+            }
+            ComeBack();
+        }
+
+    
 
     }
 
@@ -904,9 +947,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void MoneyUp()
+    public void MoneyUp(float value)
     {
-        _currentFactory.MoneyUp();
+        _currentFactory.money += value;
 
     }
     public void ButtonPerText(float price, TMP_Text text)
@@ -1151,7 +1194,7 @@ public class GameManager : MonoBehaviour
         x4Button.SetActive(false);
         OperatorController.fast = true;
         rewardSpeedMultp = 2f;
-        yield return new WaitForSeconds(20);
+        yield return new WaitForSeconds(120);
         rewardSpeedMultp = 1;
         OperatorController.fast = false;
         x4Button.SetActive(true);
@@ -1162,7 +1205,7 @@ public class GameManager : MonoBehaviour
         x2Button.SetActive(false);
         OperatorController.doublePay =true;
         rewardPriceMultp = 2;
-        yield return new WaitForSeconds(20);
+        yield return new WaitForSeconds(120);
         rewardPriceMultp = 1;
         OperatorController.doublePay = false;
         x2Button.SetActive(true);
@@ -1197,7 +1240,7 @@ public class GameManager : MonoBehaviour
     IEnumerator PaymentButtonTime()
     {
         x2Button.SetActive(false);
-        yield return new WaitForSeconds(20);
+        yield return new WaitForSeconds(120);
    
         x2Button.SetActive(true);
     }
@@ -1292,6 +1335,7 @@ public class GameManager : MonoBehaviour
         bustOpen2 = false;
 
 
+
         _bustTime2 = _bustTimeValue2;
     }
 
@@ -1323,7 +1367,7 @@ public class GameManager : MonoBehaviour
 
         GameObject factory0 = Resources.Load<GameObject>($"Levels/{levelSettings.LevelOrder[FactoryValue]}") as GameObject;
 
-        Debug.Log("FactoryValue; "+ FactoryValue);
+       // Debug.Log("FactoryValue; "+ FactoryValue);
  
 
 
@@ -1417,7 +1461,17 @@ public class GameManager : MonoBehaviour
 
     public void Vib()
     {
-        Vibration.Vibrate(45, 60, true);
+       // Vibration.Vibrate(45, 60, true);
+        if (levelSettings.vibrationOn)
+        {
+
+
+            Vibration.Vibrate(45, 60, true);
+        }
+        
+
+        
+
     }
 
     public void ProductSound()
@@ -1438,6 +1492,51 @@ public class GameManager : MonoBehaviour
         //    // Show Mediation Debugger
         //    MaxSdk.ShowMediationDebugger();
         //};
+    }
+
+    public void ComeBack()
+    {
+        StartCoroutine(ComeBackReward());
+    }
+
+
+
+    public void ComeBackClaim()
+    {
+        StartCoroutine(ComeBackRewardClaim());
+    }
+
+    IEnumerator ComeBackReward()
+    {
+
+        yield return new WaitForSeconds(2f);
+        _comeBackTab.SetActive(true);
+        _comeBackText.text = "$"+_comeBackReward.ToString();
+        _comeBackTab.transform.DOScale(Vector3.one * 1.4f, 0.2f);
+        yield return new WaitForSeconds(0.2f);
+        _comeBackTab.transform.DOScale(Vector3.one , 0.5f);
+        yield return new WaitForSeconds(0.5f);
+
+    }
+
+
+
+    IEnumerator ComeBackRewardClaim()
+    {
+        _currentFactory.money += _comeBackReward;
+        _comeBackTab.transform.DOScale(Vector3.one * 1.4f, 0.2f);
+        yield return new WaitForSeconds(0.2f);
+        _comeBackTab.transform.DOScale(Vector3.zero, 0.2f);
+        yield return new WaitForSeconds(0.2f);
+        _currentFactory.money += _comeBackReward;
+        _comeBackTab.SetActive(false);
+    }
+
+
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.SetString("lastTime", System.DateTime.Now.ToString());
+
     }
 
 }

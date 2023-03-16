@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4d66fda73292f341888faf16526dd40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ComeBackVar: 1
   _speedText: {fileID: 0}
   opPriceVar: 20
   upgradeVar: 50
@@ -62,5 +63,14 @@ MonoBehaviour:
   productSpeed: 1
   productSpeedUp: 0.5
   productSpeedDown: 1
+  yuzdeOp: 0
+  yuzdeMerge: 0
+  yuzdeStand: 0
+  newMapPrice: []
   economyValue: 0
+  EconomySettings: []
   economySettings: {fileID: 11400000, guid: 250e9f0ebb8e285468d78d0986eb541b, type: 2}
+  _keyMoneyPer: 
+  _keyCurrentOpPrice: 
+  _keyCurrentUpPrice: 
+  _keyCurrentStandPrice: 

@@ -4,7 +4,7 @@
 [CreateAssetMenu(menuName = "SciptableObjects / Economy Settings / New Economy Settings")]
 public class EconomySettings : ScriptableObject
 {
-    
+    public float ComeBackVar;
 
     [Header("Baslangic Degerleri Level ")]
     public float opPriceVar;

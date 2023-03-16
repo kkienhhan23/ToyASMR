@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -43,6 +44,13 @@ public class TapController : MonoBehaviour
     {
         if (levelSettings.vibrationOn) {
 
+            if (MissionManager.instance.currentMission.missionType=="tap")
+            {
+             
+                    MissionManager.instance.DoMission();
+                
+            }
+
             if(_vibValue<3)
             {
                 _vibValue++;
@@ -54,7 +62,7 @@ public class TapController : MonoBehaviour
                 _vibValue = 0;
                 
             }
-            Debug.Log("Vib: " + _vibValue);
+           // Debug.Log("Vib: " + _vibValue);
     
             }
 
