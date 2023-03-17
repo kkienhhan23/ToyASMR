@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca43e0c49a0d03846b62c792212192c1, type: 3}
   m_Name: Level0EconomySettings
   m_EditorClassIdentifier: 
+  adsBackReward: 60
   ComeBackVar: 1
   opPriceVar: 20
   upgradeVar: 50

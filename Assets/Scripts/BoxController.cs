@@ -8,6 +8,7 @@ using TMPro;
 public class BoxController : MonoBehaviour
 {
 
+    AudioSource audioSource;
 
     public Animator animator;
 
@@ -24,6 +25,8 @@ public class BoxController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
         gameManager = GameManager.Instance;
         transform.GetChild(0).transform.GetChild(4).transform.GetChild(0).GetComponent<TMP_Text>().text = gameManager._currentFactory.productBoxCount + "/" + gameManager._currentFactory.boxCapacity.ToString();
     }
@@ -62,6 +65,7 @@ public class BoxController : MonoBehaviour
         transform.GetChild(0).transform.GetChild(1).GetComponent<Animator>().SetTrigger("Fill");
         // transform.GetChild(0).transform.GetChild(1).GetComponent<Animator>().SetTrigger("Idle");
         yield return new WaitForSeconds(1f);
+        gameManager.boxAudio.Play();
         transform.GetChild(0).transform.GetChild(1).transform.GetChild(0).GetComponent<ParticleSystem>().Play();
         gameManager._currentFactory.money += gameManager._currentFactory.boxCapacity * gameManager._currentFactory.boxMultp;
         yield return new WaitForSeconds(1.4f);

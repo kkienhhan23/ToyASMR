@@ -7,6 +7,8 @@ using TMPro;
 public class FactoryManager : MonoBehaviour
 {
 
+    bool standChange;
+
     [SerializeField] Vector3[] PosCam;
     [SerializeField] Vector3[] PosCam2;
     [SerializeField] Vector3[] RotCam;
@@ -243,7 +245,30 @@ public class FactoryManager : MonoBehaviour
     void Update()
     {
 
-        _mainCam.orthographicSize = Mathf.Lerp(_mainCam.orthographicSize, _camSize[StandValue], Time.deltaTime * 2);
+
+        //if (standChange)
+        //{
+        //    float zoomVar = _camSize[StandValue];
+
+        //    _mainCam.orthographicSize = Mathf.Lerp(_mainCam.orthographicSize, zoomVar, Time.deltaTime * 3);
+
+        //}
+        //else
+        //{
+        //    float zoomVar = Mathf.Clamp((_camSize[StandValue] + ZoomManager.instance.zoomVar), 80, _camSize[StandValue]);
+
+        //    _mainCam.orthographicSize = Mathf.Lerp(_mainCam.orthographicSize, zoomVar, Time.deltaTime * 20);
+
+        //}
+
+        //float zoomVar =Mathf.Clamp((_camSize[StandValue]+ ZoomManager.instance.zoomVar),80, _camSize[StandValue]);
+
+        //_mainCam.orthographicSize = Mathf.Lerp(_mainCam.orthographicSize, zoomVar, Time.deltaTime * 3);
+
+        float zoomVar =Mathf.Clamp((_camSize[StandValue]* ZoomManager.instance.zoomVar),80, _camSize[StandValue]);
+
+        _mainCam.orthographicSize = Mathf.Lerp(_mainCam.orthographicSize, zoomVar, Time.deltaTime * 3);
+
         productSpeedDown = FindObjectOfType<EconomyManager>().productSpeedDown;
 
         tapSpeed = Mathf.Lerp(tapSpeed, 0, Time.deltaTime * 0.6f);
@@ -460,7 +485,7 @@ public class FactoryManager : MonoBehaviour
             }
             _mainCam.transform.DOMove(PosCam2[StandValue], 0.4f);
             //_mainCam.transform.DORotate(RotCam[StandValue], 0.4f);
-
+            StartCoroutine(StandChange(3f));
             StartCoroutine(AddingStand());
 
         }
@@ -492,7 +517,9 @@ public class FactoryManager : MonoBehaviour
             {
                 EmptySlot.Add(Slot[i]);
             }
+            ZoomManager.instance.zoomVar = 0;
             _mainCam.transform.DOMove(PosCam2[StandValue], 0.4f);
+            StartCoroutine(StandChange(3f));
             //_mainCam.transform.DORotate(RotCam[StandValue], 0.4f);
 
             StartCoroutine(AddingStand());
@@ -2183,6 +2210,14 @@ public class FactoryManager : MonoBehaviour
         }
     }
 
+
+
+   IEnumerator StandChange(float t)
+    {
+        standChange = true;
+        yield return new WaitForSeconds(t);
+        standChange = false;
+    } 
 
 }
 

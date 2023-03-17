@@ -92,7 +92,7 @@ public class MissionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(PlayerPrefs.GetFloat("missionCount"));
+       // Debug.Log(PlayerPrefs.GetFloat("missionCount"));
 
         if (missionStarted)
         {
@@ -126,9 +126,9 @@ public class MissionManager : MonoBehaviour
             {
 
                 case 0:
-                    name = "Clicking 100 times!";
-                    count = 100;
-                    instance.countFirst = 100;
+                    name = "Clicking 1000 times!";
+                    count = 1000;
+                    instance.countFirst = 1000;
                     reward =instance.Rewards[0];
                     missionType = "tap";
                     if (PlayerPrefs.GetFloat("missionCount")>0)
@@ -263,10 +263,13 @@ public class MissionManager : MonoBehaviour
 
     }
 
-
+    
 
     public void NextMission()
     {
+
+        GameManager.Instance.AfterAdsReward();
+
         if (missionComplete)
         {
             _missionCompleteTab.transform.localScale = Vector3.zero;

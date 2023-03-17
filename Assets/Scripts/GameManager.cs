@@ -11,6 +11,14 @@ using Taptic;
 public class GameManager : MonoBehaviour
 {
 
+    public AudioSource boxAudio;
+
+    float mPer = 0;
+
+    [SerializeField] GameObject _adsBackTab;
+    [SerializeField] float _adsBackReward;
+    [SerializeField] TMP_Text _adsBackText;
+    [SerializeField] TMP_Text _adsBackRewardText;
 
 
     [SerializeField] int _comeBackValue;
@@ -249,17 +257,17 @@ public class GameManager : MonoBehaviour
 
         LoadGame();
 
-        if (_comeBackValue>=10)
+        if (_comeBackValue>=30)
         {
             if (_comeBackValue >= 18000)
             {
-                _comeBackReward = 18000 * economySettings[PlayerPrefs.GetInt("LastFactory")].ComeBackVar;
-                
+                //_comeBackReward = 18000 * economySettings[PlayerPrefs.GetInt("LastFactory")].ComeBackVar;
+                _comeBackReward *= 18000;
             }
             else
             {
-              _comeBackReward = _comeBackValue * economySettings[PlayerPrefs.GetInt("LastFactory")].ComeBackVar;
-                
+              //_comeBackReward = _comeBackValue * economySettings[PlayerPrefs.GetInt("LastFactory")].ComeBackVar;
+              _comeBackReward *= _comeBackValue;
             }
             ComeBack();
         }
@@ -274,6 +282,11 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            AfterAdsReward();
+        }
+
         //if (x5Time)
         //{
         //   Time.timeScale = 3;
@@ -1430,6 +1443,9 @@ public class GameManager : MonoBehaviour
         _bustTime = _bustTimeValue;
 
 
+        _adsBackReward = economySettings[0].afterAdsReward;
+        _comeBackReward = economySettings[0].ComeBackVar;
+
     }
 
 
@@ -1496,6 +1512,14 @@ public class GameManager : MonoBehaviour
 
     public void ComeBack()
     {
+
+        for (int i = 0; i < 4; i++)
+        {
+
+            mPer += MoneyPer[i];
+
+
+        }
         StartCoroutine(ComeBackReward());
     }
 
@@ -1511,7 +1535,36 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
         _comeBackTab.SetActive(true);
-        _comeBackText.text = "$"+_comeBackReward.ToString();
+        //_comeBackText.text = "$"+(mPer*_comeBackReward).ToString();
+
+        if ((mPer * _comeBackReward) >= 1000000000)
+        {
+            _comeBackText.text = "$" + ((mPer * _comeBackReward) / 1000000000).ToString("0.#") + "B";
+
+
+        }
+        else
+      if ((mPer * _comeBackReward) >= 1000000)
+        {
+            _comeBackText.text = "$" + ((mPer * _comeBackReward) / 1000000).ToString("0.#") + "M";
+
+
+        }
+        else
+      if ((mPer * _comeBackReward) >= 1000)
+        {
+            _comeBackText.text = "$" + ((mPer * _comeBackReward) / 1000).ToString("0.#") + "K";
+
+
+        }
+        else
+        {
+            _comeBackText.text = "$" + (mPer * _comeBackReward).ToString();
+        }
+
+
+
+
         _comeBackTab.transform.DOScale(Vector3.one * 1.4f, 0.2f);
         yield return new WaitForSeconds(0.2f);
         _comeBackTab.transform.DOScale(Vector3.one , 0.5f);
@@ -1528,8 +1581,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         _comeBackTab.transform.DOScale(Vector3.zero, 0.2f);
         yield return new WaitForSeconds(0.2f);
-        _currentFactory.money += _comeBackReward;
+        _currentFactory.money += _comeBackReward*mPer;
         _comeBackTab.SetActive(false);
+        mPer = 0;
     }
 
 
@@ -1538,5 +1592,86 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetString("lastTime", System.DateTime.Now.ToString());
 
     }
+
+    public void AfterAdsReward()
+    {
+
+        for (int i = 0; i < 4; i++)
+        {
+
+            mPer += MoneyPer[i];
+
+
+        }
+        StartCoroutine(AAReward());
+
+    }
+    public void ClaimAfterAdsReward()
+    {
+        StartCoroutine(ClaimAAReward());
+
+    }
+
+    IEnumerator AAReward()
+    {
+      
+        _adsBackTab.gameObject.SetActive(true);
+       // _adsBackRewardText.text = "$" +(mPer*_adsBackReward).ToString();
+
+
+
+        if ((mPer * _adsBackReward) >= 1000000000)
+        {
+            _adsBackRewardText.text = "$" + ((mPer * _adsBackReward) / 1000000000).ToString("0.#") + "B";
+
+
+        }
+        else
+      if ((mPer * _adsBackReward) >= 1000000)
+        {
+            _adsBackRewardText.text = "$" + ((mPer * _adsBackReward) / 1000000).ToString("0.#") + "M";
+
+
+        }
+        else
+      if ((mPer * _adsBackReward) >= 1000)
+        {
+            _adsBackRewardText.text = "$" + ((mPer * _adsBackReward) / 1000).ToString("0.#") + "K";
+
+
+        }
+        else
+        {
+            _adsBackRewardText.text = "$" + (mPer * _adsBackReward).ToString();
+        }
+
+
+
+
+
+
+        _adsBackText.text = "Great!";
+        _adsBackTab.transform.DOScale(Vector3.one * 1.2f, 0.2f);
+        yield return new WaitForSeconds(0.2f);
+        _adsBackTab.transform.DOScale(Vector3.one, 0.1f);
+        yield return new WaitForSeconds(0.1f);
+    }
+
+
+    IEnumerator ClaimAAReward()
+    {
+
+ 
+        _adsBackTab.transform.DOScale(Vector3.one * 1.2f, 0.2f);
+        yield return new WaitForSeconds(0.2f);
+        _adsBackTab.transform.DOScale(Vector3.zero, 0.2f);
+        yield return new WaitForSeconds(0.2f);
+        _adsBackTab.gameObject.SetActive(false);
+        _currentFactory.MoneyUp(_adsBackReward*mPer);
+        mPer = 0;
+    }
+
+
+   
 
 }
